@@ -2,6 +2,17 @@
   <div class="dashboard">
     <h1 class="title">Ringkasan Dashboard</h1>
 
+    <!-- Tambahkan di atas grid -->
+    <div class="filter-section">
+      <label for="filterTanggal">Filter Tanggal:</label>
+      <input
+        type="date"
+        id="filterTanggal"
+        v-model="tanggalFilter"
+        @change="filterPengeluaranByTanggal"
+      />
+    </div>
+
     <div class="grid-fixed">
       <!-- Kolom 1: Hari dan Tanggal -->
       <div class="card">
@@ -28,7 +39,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in pengeluaran" :key="item.id">
+            <tr v-for="item in pengeluaranTerfilter" :key="item.id">
               <!-- <td>{{ item.username }}</td> -->
               <td>Rp{{ item.jumlah.toLocaleString() }}</td>
               <td>{{ item.catatan || '-' }}</td>
@@ -55,8 +66,24 @@ const pemasukan = ref([])
 const pengeluaran = ref([])
 const target = ref([])
 
+const tanggalFilter = ref('')
+
+// Ganti di script setup
+const pengeluaranTerfilter = computed(() => {
+  if (!tanggalFilter.value) {
+    return pengeluaran.value
+  }
+
+  return pengeluaran.value.filter((item) => {
+    // Sesuaikan dengan field tanggal di data Anda
+    const itemTanggal = new Date(item.created_at || item.tanggal).toISOString().split('T')[0]
+    return itemTanggal === tanggalFilter.value
+  })
+})
+
+// Ganti totalPengeluaran juga
 const totalPengeluaran = computed(() => {
-  return pengeluaran.value.reduce((acc, item) => acc + item.jumlah, 0)
+  return pengeluaranTerfilter.value.reduce((acc, item) => acc + item.jumlah, 0)
 })
 
 const hariIni = new Date().toLocaleDateString('id-ID', {
@@ -184,5 +211,22 @@ onMounted(fetchData)
 
 .table-pengeluaran td {
   color: #4b5563;
+}
+
+.filter-section {
+  margin-bottom: 1rem;
+  margin-left: 10px;
+}
+
+.filter-section label {
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+.filter-section input[type='date'] {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-family: 'Poppins', sans-serif;
 }
 </style>
