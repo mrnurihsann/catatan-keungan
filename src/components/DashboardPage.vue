@@ -20,11 +20,22 @@
       <!-- Kolom 3: Pengeluaran -->
       <div class="card">
         <h3>Pengeluaran</h3>
-        <ul>
-          <li v-for="item in pengeluaran" :key="item.id">
-            {{ item.nama }} - Rp{{ item.jumlah.toLocaleString() }}
-          </li>
-        </ul>
+        <table class="table-pengeluaran">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Jumlah</th>
+              <th>Catatan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in pengeluaran" :key="item.id">
+              <td>{{ item.nama }}</td>
+              <td>Rp{{ item.jumlah.toLocaleString() }}</td>
+              <td>{{ item.catatan || '-' }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- Kolom 4: Total Pengeluaran -->
@@ -152,5 +163,27 @@ onMounted(fetchData)
 .tanggal {
   font-size: 1rem;
   color: #374151;
+}
+
+.table-pengeluaran {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table-pengeluaran th,
+.table-pengeluaran td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.table-pengeluaran th {
+  background-color: #f9fafb;
+  color: #374151;
+}
+
+.table-pengeluaran td {
+  color: #4b5563;
 }
 </style>
