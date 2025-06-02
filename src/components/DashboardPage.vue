@@ -23,14 +23,13 @@
         <table class="table-pengeluaran">
           <thead>
             <tr>
-              <th>Nama</th>
               <th>Jumlah</th>
               <th>Catatan</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in pengeluaran" :key="item.id">
-              <td>{{ item.nama }}</td>
+              <!-- <td>{{ item.username }}</td> -->
               <td>Rp{{ item.jumlah.toLocaleString() }}</td>
               <td>{{ item.catatan || '-' }}</td>
             </tr>
